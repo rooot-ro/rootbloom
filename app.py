@@ -17,10 +17,10 @@ st.set_page_config(
 )
 
 # ========== 加载图片资源，请确认static文件夹内文件名和下面完全对应 ==========
-banner_img = Image.open("static/banner.png")
+banner_img = Image.open("static/banner_rootbloom_grass.png")
 bg_home_b64 = img_to_base64("static/bg_home.png")
 bg_subtle_b64 = img_to_base64("static/bg_subtle.png")
-perma_img = Image.open("static/perma.png")
+perma_img = Image.open("static/perma_model.png")
 
 # ========== 侧边导航菜单 ==========
 menu = st.sidebar.radio(
