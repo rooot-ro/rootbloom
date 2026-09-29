@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image
+# from PIL import Image
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -10,14 +10,14 @@ st.set_page_config(
     layout="wide"
 )
 
-# 加载全部4张图片
-banner_img = Image.open("static/banner_rootbloom_grass.png")
-bg_home_img = Image.open("static/bg_home.png")
-bg_subtle_img = Image.open("static/bg_subtle.png")
-perma_img = Image.open("static/perma_model.png")
+# ========== 图片加载【全部注释，云端不读取图片】==========
+# banner_img = Image.open("static/banner_rootbloom_grass.png")
+# bg_home_img = Image.open("static/bg_home.png")
+# bg_subtle_img = Image.open("static/bg_subtle.png")
+# perma_img = Image.open("static/perma_model.png")
 
 # 顶部Banner
-st.image(banner_img, use_column_width=True)
+# st.image(banner_img, use_column_width=True)
 st.title("AI赋能校本德育课程开发平台｜PERMA心理积极转化模型")
 st.markdown("""
 > 本平台面向中小学德育教师，依托PERMA积极心理学模型，结合学校校本特色文化，快速搭建德育课程方案，
@@ -25,7 +25,7 @@ st.markdown("""
 """)
 st.divider()
 
-# ========== 【顶部横向导航栏】 ==========
+# ========== 【顶部横向标签页导航】 ==========
 page_list = [
     "🏠 首页｜项目总介绍",
     "📖 PERMA模型介绍",
@@ -56,12 +56,12 @@ with selected_page[0]:
 ### 适用对象
 中小学德育教师、心理老师、校本课程开发团队
 """)
-    st.image(bg_home_img, use_column_width=True)
+    # st.image(bg_home_img, use_column_width=True)
 
 # ---------------------- 2. PERMA积极心理学模型介绍 ----------------------
 with selected_page[1]:
     st.header("PERMA积极心理学模型")
-    st.image(perma_img, use_column_width=True)
+    # st.image(perma_img, use_column_width=True)
     st.markdown("""
 PERMA是积极心理学的经典模型，包含五大核心维度，用来衡量个体积极心理状态：
 - **P 积极情绪（Positive Emotion）**：愉悦、满足、乐观等正向情绪体验
