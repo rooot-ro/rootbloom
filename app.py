@@ -1,200 +1,211 @@
 import streamlit as st
+from PIL import Image
 import pandas as pd
 import matplotlib.pyplot as plt
-from PIL import Image
-import base64
 
-# ========== 工具函数：图片转base64，用于网页背景图 ==========
-def img_to_base64(img_path):
-    with open(img_path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
-
-# ========== 页面全局基础配置 ==========
+# ---------------------- 页面基础全局配置 ----------------------
 st.set_page_config(
-    page_title="PERMA德育课程开发平台",
+    page_title="AI赋能校本德育课程开发平台",
     page_icon="🌱",
     layout="wide"
 )
 
-# ========== 加载图片资源，请确认static文件夹内文件名和下面完全对应 ==========
+# 加载全部4张图片
 banner_img = Image.open("static/banner_rootbloom_grass.png")
-bg_home_b64 = img_to_base64("static/bg_home.png")
-bg_subtle_b64 = img_to_base64("static/bg_subtle.png")
+bg_home_img = Image.open("static/bg_home.png")
+bg_subtle_img = Image.open("static/bg_subtle.png")
 perma_img = Image.open("static/perma_model.png")
 
-# ========== 侧边导航菜单 ==========
-menu = st.sidebar.radio(
-    "📋 功能导航栏",
-    [
-        "首页介绍｜PERMA模型",
-        "教师课程大纲生成",
-        "学生问卷录入",
-        "前后测对比图表"
-    ]
-)
+# 顶部Banner
+st.image(banner_img, use_column_width=True)
+st.title("AI赋能校本德育课程开发平台｜PERMA心理积极转化模型")
+st.markdown("""
+> 本平台面向中小学德育教师，依托PERMA积极心理学模型，结合学校校本特色文化，快速搭建德育课程方案，
+> 采集学生心理测评数据，实现课程干预前后心理状态对比，助力学生心理积极转化。
+""")
+st.divider()
 
-# ========== 页面背景CSS ==========
-if menu == "首页介绍｜PERMA模型":
-    page_css = f"""
-    <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{bg_home_b64}");
-            background-size: cover;
-            background-attachment: fixed;
-        }}
-        .block-container {{
-            background-color: rgba(255,255,255,0.82);
-            padding: 2rem;
-            border-radius:12px;
-        }}
-    </style>
-    """
-else:
-    page_css = f"""
-    <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{bg_subtle_b64}");
-            background-size: cover;
-            background-attachment: fixed;
-        }}
-        .block-container {{
-            background-color: rgba(255,255,255,0.85);
-            padding: 2rem;
-            border-radius:12px;
-        }}
-    </style>
-    """
-st.markdown(page_css, unsafe_allow_html=True)
+# ========== 【顶部横向导航栏】 ==========
+page_list = [
+    "🏠 首页｜项目总介绍",
+    "📖 PERMA模型介绍",
+    "🏫 校本文化录入",
+    "📑 德育课程模板生成",
+    "📤 学生基础数据上传",
+    "📝 PERMA问卷【前测】",
+    "📝 PERMA问卷【后测】",
+    "📊 前后测数据对比",
+    "ℹ️ 关于本项目"
+]
+selected_page = st.tabs(page_list)
 
-# ========== 顶部Banner横幅（已修复参数 use_container_width） ==========
-st.image(banner_img, use_container_width=True)
-
-# ===================== 板块1：首页介绍｜PERMA模型 =====================
-if menu == "首页介绍｜PERMA模型":
-    st.header("🌱 AI赋能校本德育课程开发平台")
-    st.subheader("理论基础：PERMA积极心理学模型")
-
+# ---------------------- 1. 首页｜项目总介绍 ----------------------
+with selected_page[0]:
+    st.header("🌱 项目简介")
     st.markdown("""
-PERMA模型用于追踪学生德育课程中心理积极转化，包含五大维度：
-- **P（Positive Emotions）积极情绪**：正向愉悦感、自豪感
-- **E（Engagement）投入**：沉浸式参与课程与实践活动
-- **R（Relationships）人际关系**：同伴互助、良好的校园联结
-- **M（Meaning）意义感**：理解校本文化，建立自我价值认同
-- **A（Accomplishment）成就**：完成任务，获得成长成就感
-    """)
+### 项目背景
+当前中小学德育工作，经常存在课程模板同质化、难以结合本校特色校本文化、学生心理改变难以量化评估的痛点。
+本项目基于PERMA积极心理学模型，打造轻量化德育课程开发工具。
 
-    st.image(perma_img, caption="PERMA积极心理学模型示意图", use_container_width=True)
+### 平台核心功能
+1. 录入学校校本文化，快速生成适配本校的德育课程大纲预览
+2. 上传学生基础学情数据，辅助课程内容设计
+3. PERMA五维度心理问卷，收集课程干预前、后学生心理数据
+4. 自动生成可视化图表，直观展示学生心理积极转化效果
 
-    st.info("""
-💡 项目简介
-面向中小学德育教师：教师填写校本文化、学生学情信息，平台基于PERMA框架生成标准化德育课程大纲；录入学生PERMA问卷前后测数据，自动生成可视化对比图表，直观观察学生心理积极转化效果。
-    """)
+### 适用对象
+中小学德育教师、心理老师、校本课程开发团队
+""")
+    st.image(bg_home_img, use_column_width=True)
 
-# ===================== 板块2：教师课程大纲生成 =====================
-elif menu == "教师课程大纲生成":
-    st.header("📑 校本德育课程大纲生成模板")
-    st.write("请填写学校校本文化、学生学情，平台自动生成PERMA框架下的课程大纲预览")
+# ---------------------- 2. PERMA积极心理学模型介绍 ----------------------
+with selected_page[1]:
+    st.header("PERMA积极心理学模型")
+    st.image(perma_img, use_column_width=True)
+    st.markdown("""
+PERMA是积极心理学的经典模型，包含五大核心维度，用来衡量个体积极心理状态：
+- **P 积极情绪（Positive Emotion）**：愉悦、满足、乐观等正向情绪体验
+- **E 投入（Engagement）**：全身心投入活动，沉浸其中，忘记时间
+- **R 人际关系（Relationships）**：拥有支持性、温暖的师生、同伴关系
+- **M 意义（Meaning）**：感受到超越个人的价值、归属感，认同文化与集体
+- **A 成就（Accomplishment）**：通过努力完成目标，获得成就感
 
-    school_name = st.text_input("🏫 学校名称")
-    school_culture = st.text_area("🎋 校本文化简述（例：竹子文化、簕杜鹃红色文化）")
-    student_condition = st.text_area("👧👦 班级学生学情描述")
-    course_theme = st.text_input("📖 本次德育课程主题")
+> 本项目将PERMA模型融入校本德育课程，以课程干预推动学生积极心理转化。
+""")
 
-    if st.button("生成PERMA德育课程大纲"):
-        st.success("✅ 大纲生成完成，下方预览")
-        st.subheader("【PERMA框架 · 校本德育课程方案】")
-        outline_content = f"""
-# 《{course_theme}》德育课程方案
-> 依托校本文化：{school_culture}
-> 面向学情：{student_condition}
+# ----------------------3. 校本文化信息录入 ----------------------
+with selected_page[2]:
+    st.header("🏫 校本文化信息录入")
+    st.markdown("填写学校基础信息与校本文化，作为德育课程设计的基础素材")
+    school_name = st.text_input("学校全称")
+    school_location = st.text_input("学校所在地")
+    school_feature = st.text_area("学校特色 / 校本文化简述")
+    school_target = st.text_area("德育育人目标")
+    submit_culture = st.button("保存校本文化信息")
+    if submit_culture:
+        st.success("✅ 校本文化信息已暂存，可前往课程模板页面使用")
+        st.session_state["school_name"] = school_name
+        st.session_state["school_feature"] = school_feature
+        st.session_state["school_target"] = school_target
 
-## 一、课程目标（PERMA五维目标）
-1. P积极情绪：引导学生感受本土校本文化，产生文化自信与愉悦感
-2. E投入：以项目式学习，让学生深度参与文化探究实践
-3. R人际关系：小组合作探究，培养沟通协作、互助包容的品质
-4. M意义感：读懂校本文化内涵，建立个人价值与校园文化的联结
-5. A成就：完成课程实践作品，收获成长，获得正向成就感
+# ----------------------4. 德育课程模板生成预览 ----------------------
+with selected_page[3]:
+    st.header("📑 德育课程模板生成预览")
+    st.subheader("结合校本文化与PERMA模型，生成德育课程大纲")
+    school_name = st.session_state.get("school_name", "")
+    school_culture = st.session_state.get("school_feature", "")
 
-## 二、课程实施流程
-1. 课程导入：校本文化故事、校园场景引入主题
-2. 探究学习：小组项目式任务，自主调研文化内容
-3. 实践活动：校园文化主题实践、手工/宣讲/研学等活动
-4. 反思记录：学生撰写感悟、课堂分享
-5. 课程评价：PERMA五维度问卷前测+后测，评估心理成长
+    grade = st.selectbox("适用学段", ["小学低段","小学高段","初中"])
+    course_hour = st.number_input("课时数量", min_value=1, max_value=10, value=1)
+    course_theme = st.text_input("课程主题")
 
-## 三、评价方式
-课程开展前发放PERMA问卷【前测】→开展德育课程→课程结束发放【后测】，对比学生积极心理转化效果。
-        """
-        st.markdown(outline_content)
-        st.download_button(
-            label="📥 导出大纲为文本文件",
-            data=outline_content,
-            file_name=f"{school_name}_PERMA德育课程大纲.txt",
-            mime="text/plain"
-        )
+    if st.button("生成课程大纲预览"):
+        st.success("✅ 基于PERMA模型生成课程大纲预览")
+        st.markdown(f"""
+# {school_name}校本德育课程：{course_theme}
+适用学段：{grade}｜课时：{course_hour}课时
+校本文化背景：{school_culture}
 
-# ===================== 板块3：学生问卷录入 =====================
-elif menu == "学生问卷录入":
-    st.header("📝 PERMA学生问卷数据录入面板")
-    st.write("录入同一批学生课程【前测】、【后测】五个维度得分，保存数据用于图表对比")
+## 课程目标（PERMA五维度）
+1. P：引导学生获得积极情绪
+2. E：通过校本实践活动提升课堂投入度
+3. R：构建良好师生、同伴支持人际关系
+4. M：结合校本文化，帮助学生建立价值感与归属感
+5. A：设置分层小任务，让学生获得阶段性成就感
 
-    col_left, col_right = st.columns(2)
-    with col_left:
-        st.subheader("📌 课程前测得分（上课之前）")
-        p_pre = st.number_input("P 积极情绪", min_value=0, max_value=10, value=5)
-        e_pre = st.number_input("E 投入", min_value=0, max_value=10, value=5)
-        r_pre = st.number_input("R 人际关系", min_value=0, max_value=10, value=5)
-        m_pre = st.number_input("M 意义感", min_value=0, max_value=10, value=5)
-        a_pre = st.number_input("A 成就", min_value=0, max_value=10, value=5)
+## 课程环节
+1. 导入：校本文化情境引入
+2. 活动体验：小组合作实践
+3. 小组分享与反思
+4. 课后延伸实践任务
+5. 课程评价：PERMA心理前后测评
+        """)
 
-    with col_right:
-        st.subheader("📌 课程后测得分（课程结束后）")
-        p_post = st.number_input("P 积极情绪", min_value=0, max_value=10, value=5)
-        e_post = st.number_input("E 投入", min_value=0, max_value=10, value=5)
-        r_post = st.number_input("R 人际关系", min_value=0, max_value=10, value=5)
-        m_post = st.number_input("M 意义感", min_value=0, max_value=10, value=5)
-        a_post = st.number_input("A 成就", min_value=0, max_value=10, value=5)
+# ----------------------5. 学生基础数据上传 ----------------------
+with selected_page[4]:
+    st.header("📤 上传学生基础情况数据")
+    uploaded_file = st.file_uploader("上传学生信息Excel/CSV文件", type=["xlsx","csv"])
+    if uploaded_file is not None:
+        df = pd.read_excel(uploaded_file)
+        st.subheader("上传数据预览")
+        st.dataframe(df)
+        st.info("💡 说明：学生数据仅用于课程方案参考，不会对外泄露。")
+        st.session_state["student_df"] = df
 
-    survey_df = pd.DataFrame({
-        "PERMA维度": ["P积极情绪", "E投入", "R人际关系", "M意义感", "A成就"],
-        "前测得分": [p_pre, e_pre, r_pre, m_pre, a_pre],
-        "后测得分": [p_post, e_post, r_post, m_post, a_post]
-    })
-    st.session_state["survey_data"] = survey_df
+# ----------------------6. PERMA问卷【课程前测】 ----------------------
+with selected_page[5]:
+    st.header("📝 PERMA心理问卷｜课程前测")
+    st.markdown("课程开展之前填写，记录学生初始心理状态")
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        p_pre = st.slider("P积极情绪",0,10,5)
+    with col2:
+        e_pre = st.slider("E投入",0,10,5)
+    with col3:
+        r_pre = st.slider("R人际关系",0,10,5)
+    with col4:
+        m_pre = st.slider("M意义",0,10,5)
+    with col5:
+        a_pre = st.slider("A成就",0,10,5)
+    if st.button("保存前测分数"):
+        st.session_state["pre"] = [p_pre,e_pre,r_pre,m_pre,a_pre]
+        st.success("✅ 前测分数已保存！")
 
-    st.subheader("📋 录入数据预览表")
-    st.dataframe(survey_df, use_container_width=True)
-    st.success("✅ 数据已临时保存，可前往【前后测对比图表】页面绘图")
+# ----------------------7. PERMA问卷【课程后测】 ----------------------
+with selected_page[6]:
+    st.header("📝 PERMA心理问卷｜课程后测")
+    st.markdown("课程结束后填写，记录干预之后学生心理状态")
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        p_post = st.slider("P积极情绪",0,10,6)
+    with col2:
+        e_post = st.slider("E投入",0,10,6)
+    with col3:
+        r_post = st.slider("R人际关系",0,10,6)
+    with col4:
+        m_post = st.slider("M意义",0,10,6)
+    with col5:
+        a_post = st.slider("A成就",0,10,6)
+    if st.button("保存后测分数"):
+        st.session_state["post"] = [p_post,e_post,r_post,m_post,a_post]
+        st.success("✅ 后测分数已保存！")
 
-# ===================== 板块4：前后测对比图表 =====================
-elif menu == "前后测对比图表":
-    st.header("📊 PERMA五维度 前后测心理转化对比图")
-    st.write("读取问卷录入数据，自动生成柱状对比图，观察学生心理成长变化")
+# ----------------------8. 前后测数据对比分析 ----------------------
+with selected_page[7]:
+    st.header("📊 PERMA五维度 前后测对比分析")
+    pre_score = st.session_state.get("pre", [5,5,5,5,5])
+    post_score = st.session_state.get("post", [6,6,6,6,6])
 
-    if "survey_data" in st.session_state:
-        chart_df = st.session_state["survey_data"]
-        fig, ax = plt.subplots(figsize=(11, 5.5))
-        x_axis = list(range(len(chart_df["PERMA维度"])))
-        bar_width = 0.35
+    labels = ["P积极情绪","E投入","R人际关系","M意义","A成就"]
+    fig, ax = plt.subplots(figsize=(10,6))
+    x = list(range(len(labels)))
+    ax.bar([i-0.2 for i in x], pre_score, width=0.4, label="课程前测")
+    ax.bar([i+0.2 for i in x], post_score, width=0.4, label="课程后测")
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.set_ylim(0,10)
+    ax.legend()
+    ax.set_title("PERMA五维度 课程干预前后对比")
+    st.pyplot(fig)
 
-        bar1 = ax.bar([i - bar_width/2 for i in x_axis], chart_df["前测得分"], bar_width, label="课程前测", color="#73b873")
-        bar2 = ax.bar([i + bar_width/2 for i in x_axis], chart_df["后测得分"], bar_width, label="课程后测", color="#2d7d46")
+# ----------------------9. 关于本项目 ----------------------
+with selected_page[8]:
+    st.header("ℹ️ 关于本项目")
+    st.markdown("""
+#### 项目名称
+AI赋能校本德育课程开发平台（基于PERMA积极心理模型）
 
-        ax.set_xticks(x_axis)
-        ax.set_xticklabels(chart_df["PERMA维度"])
-        ax.set_ylabel("得分（0~10分）")
-        ax.set_title("PERMA模型｜德育课程前后测得分对比", fontsize=14)
-        ax.legend()
-        ax.set_ylim(0, 10)
+#### 项目简介
+本项目面向中小学德育教师，将PERMA积极心理学模型融入校本德育课程开发。
+教师录入本校校本文化、学生学情，快速生成德育课程大纲；使用PERMA心理问卷采集前后测数据，可视化展示学生积极心理转化效果。
 
-        for bar in bar1:
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height + 0.1, f"{height}", ha="center")
-        for bar in bar2:
-            height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height + 0.1, f"{height}", ha="center")
+#### 适用场景
+- 学校校本德育课程开发
+- 心理健康教育课程干预效果评估
+- 教师备课模板工具
 
-        st.pyplot(fig)
-        st.info("📖图表解读：后测分数高于前测，代表学生在该维度出现积极心理转化，德育干预有效果。")
-    else:
-        st.warning("⚠️ 暂无问卷数据！请先切换到【学生问卷录入】页面填写数据。")
+#### 项目亮点
+✅ 结合校本文化，课程方案不千篇一律
+✅ PERMA模型量化心理成长，看得见学生改变
+✅ 操作简单，文科教师无需代码基础即可使用
+""")
