@@ -1,211 +1,159 @@
 import streamlit as st
-# from PIL import Image
-import pandas as pd
-import matplotlib.pyplot as plt
 
-# ---------------------- 页面基础全局配置 ----------------------
+# ============ 图片路径，全部改为jpg，匹配你仓库图片 ============
+banner_path = "banner_rootbloom_grass.jpg"
+bg_home_path = "bg_home.jpg"
+bg_subtle_path = "bg_subtle.jpg"
+perma_path = "perma_model.jpg"
+
+# ============ 页面基础全局设置 ============
 st.set_page_config(
-    page_title="AI赋能校本德育课程开发平台",
+    page_title="RootBloom",
     page_icon="🌱",
     layout="wide"
 )
 
-# ========== 图片加载【全部注释，云端不读取图片】==========
-# banner_img = Image.open("static/banner_rootbloom_grass.png")
-# bg_home_img = Image.open("static/bg_home.png")
-# bg_subtle_img = Image.open("static/bg_subtle.png")
-# perma_img = Image.open("static/perma_model.png")
+# ============ 顶部横向导航小板块（一行横向按钮） ============
+page = st.radio(
+    "",
+    ["首页", "PERMA模型与德育拆分", "AI赋能德育课程", "校本课程案例", "效果评估", "项目总结"],
+    horizontal=True
+)
+st.markdown("<hr style='border:1px solid #88a888;'>", unsafe_allow_html=True)
 
-# 顶部Banner
-# st.image(banner_img, use_column_width=True)
-st.title("AI赋能校本德育课程开发平台｜PERMA心理积极转化模型")
-st.markdown("""
-> 本平台面向中小学德育教师，依托PERMA积极心理学模型，结合学校校本特色文化，快速搭建德育课程方案，
-> 采集学生心理测评数据，实现课程干预前后心理状态对比，助力学生心理积极转化。
-""")
-st.divider()
 
-# ========== 【顶部横向标签页导航】 ==========
-page_list = [
-    "🏠 首页｜项目总介绍",
-    "📖 PERMA模型介绍",
-    "🏫 校本文化录入",
-    "📑 德育课程模板生成",
-    "📤 学生基础数据上传",
-    "📝 PERMA问卷【前测】",
-    "📝 PERMA问卷【后测】",
-    "📊 前后测数据对比",
-    "ℹ️ 关于本项目"
-]
-selected_page = st.tabs(page_list)
+# ====================== 首页 ======================
+if page == "首页":
+    st.image(banner_path, use_column_width=True)
 
-# ---------------------- 1. 首页｜项目总介绍 ----------------------
-with selected_page[0]:
-    st.header("🌱 项目简介")
-    st.markdown("""
-### 项目背景
-当前中小学德育工作，经常存在课程模板同质化、难以结合本校特色校本文化、学生心理改变难以量化评估的痛点。
-本项目基于PERMA积极心理学模型，打造轻量化德育课程开发工具。
+    st.markdown("# 🌱 RootBloom 项目首页")
+    st.write("RootBloom是一项**AI赋能乡村小学德育**的校本课程项目。项目以河源乡土文化为载体，依托PERMA积极心理模型搭建德育框架，借助AI工具降低乡村教师备课压力，把积极心理、乡土文化、德育育人三者融合，打造低成本、可落地的乡村小学德育课程。")
 
-### 平台核心功能
-1. 录入学校校本文化，快速生成适配本校的德育课程大纲预览
-2. 上传学生基础学情数据，辅助课程内容设计
-3. PERMA五维度心理问卷，收集课程干预前、后学生心理数据
-4. 自动生成可视化图表，直观展示学生心理积极转化效果
+    st.markdown("## 📌 项目背景")
+    st.write("乡村小学德育普遍存在素材老旧、备课耗时长、缺少本土化内容、评价方式单一等痛点。教师人手紧张，很难自主开发贴合本地乡土文化的德育课堂。")
+    st.write("本项目立足河源乡村小学，将乡土文化资源融入德育，利用AI辅助课程开发、课堂互动与成长评价，以PERMA模型作为德育效果的评价框架，实现德育课堂从说教式到体验式的转变。")
 
-### 适用对象
-中小学德育教师、心理老师、校本课程开发团队
-""")
-    # st.image(bg_home_img, use_column_width=True)
+    st.markdown("## 🎯 项目目标")
+    st.write("1. 基于PERMA积极心理模型，搭建乡土化德育课程框架，将德育目标拆解为五大心理成长维度。")
+    st.write("2. 利用AI赋能课程全流程，减轻乡村教师备课、素材制作、学生评价的负担。")
+    st.write("3. 开发全套可直接落地的德育课程资源包：教案、课件、课堂任务单。")
+    st.write("4. 通过课程前后测，评估这套德育课程对学生积极心理品质与德育素养的提升效果。")
 
-# ---------------------- 2. PERMA积极心理学模型介绍 ----------------------
-with selected_page[1]:
-    st.header("PERMA积极心理学模型")
-    # st.image(perma_img, use_column_width=True)
-    st.markdown("""
-PERMA是积极心理学的经典模型，包含五大核心维度，用来衡量个体积极心理状态：
-- **P 积极情绪（Positive Emotion）**：愉悦、满足、乐观等正向情绪体验
-- **E 投入（Engagement）**：全身心投入活动，沉浸其中，忘记时间
-- **R 人际关系（Relationships）**：拥有支持性、温暖的师生、同伴关系
-- **M 意义（Meaning）**：感受到超越个人的价值、归属感，认同文化与集体
-- **A 成就（Accomplishment）**：通过努力完成目标，获得成就感
 
-> 本项目将PERMA模型融入校本德育课程，以课程干预推动学生积极心理转化。
-""")
+# ====================== PERMA模型与德育拆分页面 ======================
+elif page == "PERMA模型与德育拆分":
+    st.image(perma_path, use_column_width=True)
 
-# ----------------------3. 校本文化信息录入 ----------------------
-with selected_page[2]:
-    st.header("🏫 校本文化信息录入")
-    st.markdown("填写学校基础信息与校本文化，作为德育课程设计的基础素材")
-    school_name = st.text_input("学校全称")
-    school_location = st.text_input("学校所在地")
-    school_feature = st.text_area("学校特色 / 校本文化简述")
-    school_target = st.text_area("德育育人目标")
-    submit_culture = st.button("保存校本文化信息")
-    if submit_culture:
-        st.success("✅ 校本文化信息已暂存，可前往课程模板页面使用")
-        st.session_state["school_name"] = school_name
-        st.session_state["school_feature"] = school_feature
-        st.session_state["school_target"] = school_target
+    st.markdown("# ✨ PERMA模型 —— 德育目标拆解")
+    st.write("我们把PERMA五大维度，直接对应小学德育育人目标，将抽象德育拆分成可观察、可教学、可评估的课堂目标：")
 
-# ----------------------4. 德育课程模板生成预览 ----------------------
-with selected_page[3]:
-    st.header("📑 德育课程模板生成预览")
-    st.subheader("结合校本文化与PERMA模型，生成德育课程大纲")
-    school_name = st.session_state.get("school_name", "")
-    school_culture = st.session_state.get("school_feature", "")
+    st.markdown("### 🌞 P 积极情绪 Positive Emotion｜德育：涵养仁爱与共情")
+    st.write("德育目标：引导学生感受家乡美好，学会共情他人，拥有温暖、正向的情绪。")
+    st.write("课堂落地：乡土故事品读、家乡美景观察，引导学生表达内心感受，培育感恩、友善的德育品质。")
 
-    grade = st.selectbox("适用学段", ["小学低段","小学高段","初中"])
-    course_hour = st.number_input("课时数量", min_value=1, max_value=10, value=1)
-    course_theme = st.text_input("课程主题")
+    st.markdown("### 🎯 E 投入 Engagement｜德育：培养专注与坚持")
+    st.write("德育目标：锻炼学生耐心、毅力，面对任务不轻易放弃，养成踏实专注的品格。")
+    st.write("课堂落地：乡土手工、自然探究任务，让学生沉浸式动手实践，在克服困难中磨炼意志品质。")
 
-    if st.button("生成课程大纲预览"):
-        st.success("✅ 基于PERMA模型生成课程大纲预览")
-        st.markdown(f"""
-# {school_name}校本德育课程：{course_theme}
-适用学段：{grade}｜课时：{course_hour}课时
-校本文化背景：{school_culture}
+    st.markdown("### 🤝 R 人际关系 Relationships｜德育：学会合作与尊重")
+    st.write("德育目标：懂得倾听、尊重同伴，学会团队协作，友善沟通，构建良好同伴关系。")
+    st.write("课堂落地：小组研学讨论、集体作品共创，在合作活动学习包容、互助的品德。")
 
-## 课程目标（PERMA五维度）
-1. P：引导学生获得积极情绪
-2. E：通过校本实践活动提升课堂投入度
-3. R：构建良好师生、同伴支持人际关系
-4. M：结合校本文化，帮助学生建立价值感与归属感
-5. A：设置分层小任务，让学生获得阶段性成就感
+    st.markdown("### 🧭 M 意义 Meaning｜德育：厚植乡土认同与家国情怀")
+    st.write("德育目标：认识家乡文化，建立文化自信，理解自身价值，树立责任感。")
+    st.write("课堂落地：本土民俗、东江乡土红色故事学习，从热爱家乡起步，建立家国情怀。")
 
-## 课程环节
-1. 导入：校本文化情境引入
-2. 活动体验：小组合作实践
-3. 小组分享与反思
-4. 课后延伸实践任务
-5. 课程评价：PERMA心理前后测评
-        """)
+    st.markdown("### 🏅 A 成就 Accomplishment｜德育：塑造自信与进取精神")
+    st.write("德育目标：肯定自我价值，敢于展示成果，建立正向自我认知，勇于挑战。")
+    st.write("课堂落地：学生成果展示、作品分享，让学生看见自己的成长，获得成就感。")
 
-# ----------------------5. 学生基础数据上传 ----------------------
-with selected_page[4]:
-    st.header("📤 上传学生基础情况数据")
-    uploaded_file = st.file_uploader("上传学生信息Excel/CSV文件", type=["xlsx","csv"])
-    if uploaded_file is not None:
-        df = pd.read_excel(uploaded_file)
-        st.subheader("上传数据预览")
-        st.dataframe(df)
-        st.info("💡 说明：学生数据仅用于课程方案参考，不会对外泄露。")
-        st.session_state["student_df"] = df
+    st.markdown("## 📌 核心逻辑")
+    st.write("传统德育偏向条文说教，本项目用PERMA模型把德育拆成五个可落地的成长方向，每一节德育课都对应至少一个维度，让德育效果可以观察、可以评估。")
 
-# ----------------------6. PERMA问卷【课程前测】 ----------------------
-with selected_page[5]:
-    st.header("📝 PERMA心理问卷｜课程前测")
-    st.markdown("课程开展之前填写，记录学生初始心理状态")
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        p_pre = st.slider("P积极情绪",0,10,5)
-    with col2:
-        e_pre = st.slider("E投入",0,10,5)
-    with col3:
-        r_pre = st.slider("R人际关系",0,10,5)
-    with col4:
-        m_pre = st.slider("M意义",0,10,5)
-    with col5:
-        a_pre = st.slider("A成就",0,10,5)
-    if st.button("保存前测分数"):
-        st.session_state["pre"] = [p_pre,e_pre,r_pre,m_pre,a_pre]
-        st.success("✅ 前测分数已保存！")
 
-# ----------------------7. PERMA问卷【课程后测】 ----------------------
-with selected_page[6]:
-    st.header("📝 PERMA心理问卷｜课程后测")
-    st.markdown("课程结束后填写，记录干预之后学生心理状态")
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        p_post = st.slider("P积极情绪",0,10,6)
-    with col2:
-        e_post = st.slider("E投入",0,10,6)
-    with col3:
-        r_post = st.slider("R人际关系",0,10,6)
-    with col4:
-        m_post = st.slider("M意义",0,10,6)
-    with col5:
-        a_post = st.slider("A成就",0,10,6)
-    if st.button("保存后测分数"):
-        st.session_state["post"] = [p_post,e_post,r_post,m_post,a_post]
-        st.success("✅ 后测分数已保存！")
+# ====================== AI赋能德育课程【独立页面】 ======================
+elif page == "AI赋能德育课程":
+    st.image(bg_subtle_path, use_column_width=True)
 
-# ----------------------8. 前后测数据对比分析 ----------------------
-with selected_page[7]:
-    st.header("📊 PERMA五维度 前后测对比分析")
-    pre_score = st.session_state.get("pre", [5,5,5,5,5])
-    post_score = st.session_state.get("post", [6,6,6,6,6])
+    st.markdown("# 🤖 AI赋能乡村小学德育课程")
+    st.write("AI不是用来替代老师，而是作为乡村教师的辅助工具，贯穿课程开发、课堂教学、学生评价全流程，配合PERMA德育框架使用。")
 
-    labels = ["P积极情绪","E投入","R人际关系","M意义","A成就"]
-    fig, ax = plt.subplots(figsize=(10,6))
-    x = list(range(len(labels)))
-    ax.bar([i-0.2 for i in x], pre_score, width=0.4, label="课程前测")
-    ax.bar([i+0.2 for i in x], post_score, width=0.4, label="课程后测")
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
-    ax.set_ylim(0,10)
-    ax.legend()
-    ax.set_title("PERMA五维度 课程干预前后对比")
-    st.pyplot(fig)
+    st.markdown("## 📝 1. AI辅助课程内容开发（备课环节）")
+    st.write("- 根据PERMA对应德育目标，AI快速生成乡土德育教案、课堂导入故事、课堂提问。")
+    st.write("- 把河源本地簕杜鹃、修竹、东江红色乡土素材交给AI，自动改编成适合小学生的简短德育故事。")
+    st.write("- AI生成课堂任务单、手工活动指引，大幅降低乡村教师备课时间。")
 
-# ----------------------9. 关于本项目 ----------------------
-with selected_page[8]:
-    st.header("ℹ️ 关于本项目")
-    st.markdown("""
-#### 项目名称
-AI赋能校本德育课程开发平台（基于PERMA积极心理模型）
+    st.markdown("## 🎨 2. AI生成课堂可视化素材")
+    st.write("- AI绘制乡土插画、德育主题海报，制作课件配图，解决乡村学校美术素材不足的问题。")
+    st.write("- 生成情景对话脚本，用于课堂角色扮演德育活动。")
 
-#### 项目简介
-本项目面向中小学德育教师，将PERMA积极心理学模型融入校本德育课程开发。
-教师录入本校校本文化、学生学情，快速生成德育课程大纲；使用PERMA心理问卷采集前后测数据，可视化展示学生积极心理转化效果。
+    st.markdown("## 💬 3. AI课堂互动，辅助德育引导")
+    st.write("- 课堂上，AI作为虚拟伙伴，引导学生分享感受，倾听学生想法，辅助情绪表达。")
+    st.write("- 针对学生的发言，给出温和正向引导，帮助学生表达共情、感恩等德育相关感悟。")
 
-#### 适用场景
-- 学校校本德育课程开发
-- 心理健康教育课程干预效果评估
-- 教师备课模板工具
+    st.markdown("## 📊 4. AI辅助德育评价（对接PERMA模型）")
+    st.write("- AI整理学生课堂发言、作品描述，对应PERMA五个维度做质性记录。")
+    st.write("- 辅助整理问卷前后测数据，自动生成简单可视化图表，帮助老师快速看到学生德育成长变化。")
 
-#### 项目亮点
-✅ 结合校本文化，课程方案不千篇一律
-✅ PERMA模型量化心理成长，看得见学生改变
-✅ 操作简单，文科教师无需代码基础即可使用
-""")
+    st.markdown("## ⚖️ 使用原则")
+    st.write("教师全程主导课堂，AI只做辅助。所有AI产出内容，都由教师审核、本地化修改，保证内容贴合乡村小学生认知水平，守住德育育人主线。")
+
+
+# ====================== 校本课程案例 ======================
+elif page == "校本课程案例":
+    st.image(bg_subtle_path, use_column_width=True)
+
+    st.markdown("# 📚 校本德育课程案例")
+    st.write("整套课程以PERMA为德育框架，AI辅助备课，面向小学3-6年级，围绕河源乡土文化设计德育体验课。")
+
+    st.markdown("## 📝 课程设计")
+    st.write("全套8课时德育校本课，每一节课都绑定PERMA的1~2个德育维度。课程以体验式活动为主，摒弃说教式德育。")
+    st.write("课程结构：乡土情景导入 → 体验活动 → 小组分享 → 作品创作 → 成果展示。")
+
+    st.markdown("## 🗂️ 课程主题示例")
+    st.write("**主题1：家乡草木里的温暖（P积极情绪）** 感受自然之美，学会感恩；AI生成植物小故事。")
+    st.write("**主题2：一起做乡土手作（E投入 + R人际关系）** 小组合作手工，磨炼耐心，学会互助。")
+    st.write("**主题3：东江乡土红色小故事（M意义）** 了解家乡先辈故事，厚植家国情怀。")
+    st.write("**主题4：我的家乡成果展（A成就）** 学生展示作品，建立自信。")
+
+    st.markdown("## 🏫 课堂实施")
+    st.write("乡村教师利用AI快速拿到教案和素材，在课堂组织体验活动。教师重点观察学生情绪、合作表现，记录德育成长，课程结束后收集问卷，完成效果评估。")
+
+
+# ====================== 效果评估（仅这里放前测后测） ======================
+elif page == "效果评估":
+    st.image(bg_home_path, use_column_width=True)
+
+    st.markdown("# 📊 德育课程效果评估（前测&后测）")
+    st.write("以PERMA五大维度作为评价指标，采用课程前测、课程后测的对照方式，评估这套AI赋能乡土德育课程对学生积极心理品质、德育素养的提升效果。")
+
+    st.markdown("## 📐 评估方案")
+    st.write("课程**开课之前**发放前测问卷，采集学生在PERMA五个维度的基础水平；8课时课程全部结束之后，使用同一套问卷开展后测。")
+    st.write("量化问卷数据 + 课堂观察、学生作品质性记录，三角互证，综合评价德育成效。")
+
+    st.markdown("## 📈 前后测说明")
+    st.write("前测：获取学生初始状态，作为基准线。")
+    st.write("后测：对比前测数据，观察学生在积极情绪、专注投入、同伴协作、乡土认同感、自信心五个德育维度的提升幅度。")
+    st.write("后续网页可以直接嵌入柱状对比图，直观展示课程带来的变化。")
+
+    st.info("💡 前测、后测仅为本页面内容，其他页面不再重复。")
+
+
+# ====================== 项目总结 ======================
+elif page == "项目总结":
+    st.image(banner_path, use_column_width=True)
+
+    st.markdown("# 📋 项目总结与展望")
+    st.write("RootBloom项目，以PERMA积极心理模型拆解德育目标，利用AI赋能乡村小学德育校本课程，把河源乡土文化融入德育课堂，探索低成本、可复制的乡村德育新路径。")
+
+    st.markdown("## 🏆 项目成果")
+    st.write("✅ 基于PERMA模型完成德育目标拆解，建立乡土德育课程框架")
+    st.write("✅ 搭建AI辅助德育课程全流程方案，适配乡村教师需求")
+    st.write("✅ 产出8课时完整校本德育教案、课件、学生任务单资源包")
+    st.write("✅ 完成课堂实践，开展前后测评估，收集学生成长数据")
+
+    st.markdown("## 🔍 反思")
+    st.write("AI仅作为辅助工具，不能替代教师的德育引导。部分乡村学生文字表达能力有限，问卷填写需要教师引导。样本规模有限，后续可以扩大试点学校。")
+
+    st.markdown("## 🔭 未来计划")
+    st.write("持续迭代AI提示词模板，一键生成乡土德育课程素材；继续拓展河源乡土文化素材库，推广给更多乡村小学。希望这套模式可以给县域乡村德育提供可落地的参考方案。")
