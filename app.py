@@ -9,7 +9,7 @@ perma_path = "perma_model.png"
 
 # ============ 页面基础全局设置 ============
 st.set_page_config(
-    page_title="RootBloom｜乡土文化浸润，培育品质行为",
+    page_title="乡土文化浸润，培育品质行为",
     page_icon="🌱",
     layout="wide"
 )
@@ -29,6 +29,17 @@ page_style = """
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+.banner-fallback{
+    width:100%;
+    padding:60px 20px;
+    background:#d8e9d2;
+    text-align:center;
+}
+.banner-fallback-title{
+    font-size:36px;
+    font-weight:bold;
+    color:#2c4227;
 }
 
 /* 隐藏原生顶部白条 */
@@ -57,9 +68,16 @@ page_style = """
 """
 st.markdown(page_style, unsafe_allow_html=True)
 
-# ============ 顶部Banner ============
+# ============ 顶部Banner【try‑except 捕获，不会崩溃】 ============
 st.markdown("<div class='banner-container'>", unsafe_allow_html=True)
-st.image(banner_path, use_container_width=True)
+try:
+    st.image(banner_path, use_container_width=True)
+except Exception:
+    st.markdown("""
+    <div class="banner-fallback">
+        <div class="banner-fallback-title">乡土文化浸润，培育品质行为</div>
+    </div>
+    """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ============ 导航栏 ============
@@ -75,7 +93,7 @@ st.markdown("<hr style='border:1px solid #b8c9b3;'>", unsafe_allow_html=True)
 # ====================== 首页 ======================
 if page == "首页":
     st.markdown("<div class='content-card'>", unsafe_allow_html=True)
-    st.subheader("RootBloom｜乡土文化浸润，培育品质行为")
+    st.subheader("乡土文化浸润，培育品质行为")
     st.write("本项目立足乡村小学本土校本文化资源，以PERMA模型作为观测框架，将乡土文化学习与学生品质行为培育融合。借助AI降低教师校本课程开发压力，把德育从说教转变为在地文化体验，**追踪、记录学生在乡土实践场景下的品质行为变化**，实现文化浸润、行为育人。")
 
     st.subheader("项目背景")
@@ -84,7 +102,7 @@ if page == "首页":
 
     st.subheader("项目目标")
     st.write("1. 理论目标：依托PERMA积极心理学框架，构建**乡土文化场景下的学生品质行为观测体系**，实现德育评价从主观感受转向可观测行为记录。")
-    st.write("2. 课程开发目标：开发一套完整乡土校本课程包，包含教案、课堂任务单、行为观察量表，将本土文化资源转化为育人载体。")
+    st.write("2. 课程开发目标：开发一套完整乡土校本课程包，包含教案、课堂任务单、行为观察量表；依托乡土实践落实义务教育核心素养，将本土文化资源转化为育人载体。")
     st.write("3. 工具目标：搭建AI辅助备课网页工具，帮助乡村教师快速生成校本课程方案；支持批量录入学生课堂行为记录，可视化展示品质行为成长，一键导出成长档案。")
     st.write("4. 育人目标：依托家乡本土文化浸润，引导学生建立乡土认同，在实践活动中养成友善、专注、合作、自信的良好品质行为。")
     st.markdown("</div>", unsafe_allow_html=True)
@@ -92,7 +110,10 @@ if page == "首页":
 # ====================== PERMA框架｜品质行为拆解页面 ======================
 elif page == "PERMA框架｜品质行为拆解":
     st.markdown("<div class='content-card'>", unsafe_allow_html=True)
-    st.image(perma_path, use_container_width=True)
+    try:
+        st.image(perma_path, use_container_width=True)
+    except Exception:
+        st.info("📌 PERMA品质行为观测框架示意图（图片未上传，不影响全部功能）")
 
     st.subheader("PERMA框架 —— 乡土课程对应的品质行为观测指标")
     st.write("本项目不做抽象心理测试，**每一项维度都对应乡土课堂里可以直接观察到的学生行为**，教师在研学、手作、文化分享等活动中记录表现：")
@@ -141,8 +162,8 @@ elif page == "AI赋能校本课程开发":
 课程设计依托本土乡土文化资源，以PERMA框架为基础，重点培育学生以下品质行为：{dim_text}。
 
 要求输出完整课程大纲，包含：
-1.课程设计理念：乡土文化浸润，将文化认知转化为学生品质行为
-2.三维教学目标（情感态度、认知、行为目标，重点写可观察学生行为目标）
+1.课程设计理念：乡土文化浸润，将文化认知转化为学生品质行为，落实义务教育核心素养；
+2.核心素养目标（文化自信、健全人格、责任意识、合作探究，重点写可观察学生行为目标）；
 3.教学重点与教学难点
 4.分课时教学设计，每节课写清楚教学环节、时长分配、学生实践活动、教师引导话术
 5.配套课堂品质行为观察量表，用于课后记录学生行为表现，对接PERMA行为观测维度
@@ -170,7 +191,7 @@ elif page == "AI赋能校本课程开发":
 elif page == "乡土校本课程案例":
     st.markdown("<div class='content-card'>", unsafe_allow_html=True)
     st.subheader("📚 乡土校本德育课程完整案例")
-    st.write("整套课程一共8课时，面向小学3-6年级，以PERMA行为观测框架为核心，依托河源本土乡土文化设计体验式实践课。每一节课聚焦1~2项品质行为，以学生在地实践活动为主。")
+    st.write("整套课程一共8课时，面向小学3‑6年级，以PERMA行为观测框架为核心，依托河源本土乡土文化设计体验式实践课。每一节课聚焦1~2项品质行为，以学生在地实践活动为主。")
 
     st.subheader("📝 课程整体设计框架")
     st.write("课程固定结构：乡土情景导入 → 沉浸式文化体验活动 → 小组分享研讨 → 学生作品创作 → 成果展示与行为观察评价。")
