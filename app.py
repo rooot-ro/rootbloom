@@ -8,7 +8,7 @@ perma_path = "perma_model.jpg"
 
 # ============ 页面基础全局设置 ============
 st.set_page_config(
-    page_title="RootBloom",
+    page_title="从文化符号到品质行为",
     page_icon="🌱",
     layout="wide"
 )
@@ -16,7 +16,7 @@ st.set_page_config(
 # ===================== CSS 样式【顶部固定Banner + 内容卡片浅绿色】 =====================
 page_style = """
 <style>
-/* 整个网页最外层背景：奶油米底色，参考蜡笔小新示例页面 */
+/* 整个网页最外层背景：奶油米底色 */
 [data-testid="stAppViewContainer"] {
     background-color: #f7f1e3;
 }
@@ -83,8 +83,8 @@ st.markdown("<hr style='border:1px solid #b8c9b3;'>", unsafe_allow_html=True)
 # ====================== 首页 ======================
 if page == "首页":
     st.markdown("<div class='content-card'>", unsafe_allow_html=True)
-    st.subheader("RootBloom｜AI赋能乡村小学乡土德育校本课程项目")
-    st.write("RootBloom项目面向乡村小学，以PERMA积极心理学模型搭建德育评价框架，结合地方乡土资源，借助AI工具减轻一线教师校本课程开发负担，打造低成本、可迁移、体验式德育课程。项目将传统说教德育转化为实践体验式课堂，把积极心理品质培育融入本土文化学习。")
+    st.subheader("从文化符号到品质行为｜AI赋能乡村小学乡土德育校本课程项目")
+    st.write("本项目面向乡村小学，以PERMA积极心理学模型搭建德育评价框架，结合地方乡土资源，借助AI工具减轻一线教师校本课程开发负担，打造低成本、可迁移、体验式德育课程。项目将传统说教德育转化为实践体验式课堂，把积极心理品质培育融入本土文化学习。")
 
     st.subheader("项目背景")
     st.write("乡村小学德育普遍存在四大现实难题：①德育内容城市化，缺少贴合本地乡土资源的课程素材；②教师教学任务繁重，独立开发校本德育课程工作量巨大；③德育评价偏向主观描述，缺少可量化、可视化的学生成长追踪工具；④课堂形式以讲授为主，学生参与感弱，德育内化效果不足。")
@@ -181,7 +181,7 @@ elif page == "AI赋能德育课程":
 # ====================== 校本课程案例 ======================
 elif page == "校本课程案例":
     st.markdown("<div class='content-card'>", unsafe_allow_html=True)
-    st.subheader("📚 RootBloom校本德育课程完整案例")
+    st.subheader("📚 校本德育课程完整案例")
     st.write("整套课程一共8课时，面向小学3-6年级，以PERMA模型作为德育框架，全部围绕地方乡土文化设计体验式德育课。每一节课绑定1~2个PERMA成长维度，以学生实践活动为主。")
 
     st.subheader("📝 课程整体设计框架")
@@ -228,11 +228,10 @@ elif page == "效果评估&成长图表":
         "分数": [pre_P, pre_E, pre_R, pre_M, pre_A, post_P, post_E, post_R, post_M, post_A],
         "测试阶段": ["前测","前测","前测","前测","前测","后测","后测","后测","后测","后测"]
     })
-    fig = plotly.express.bar(data, x="PERMA维度", y="分数", color="测试阶段", barmode="group",
+    fig = px.bar(data, x="PERMA维度", y="分数", color="测试阶段", barmode="group",
                  range_y=[0,10], title="学生德育心理品质：课程前测 VS 后测对比")
     st.plotly_chart(fig, use_container_width=True)
 
-    # 👉这里已经删掉了原来st.info那一行！！
     st.markdown("</div>", unsafe_allow_html=True)
 
 
