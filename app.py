@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# ============ 图片路径（全部jpg） ============
+# ============ 图片路径【全部JPG！】 ============
 banner_path = "banner_rootbloom_grass.jpg"
 bg_home_path = "bg_home.jpg"
 bg_subtle_path = "bg_subtle.jpg"
@@ -15,10 +15,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# ===================== CSS样式 =====================
+# ===================== CSS样式【修复背景图】 =====================
 page_bg_img = f"""
 <style>
-/* 【整个页面全局背景图 bg_home.jpg】 */
+/* 全局页面背景 bg_home.jpg */
 [data-testid="stAppViewContainer"] {{
 background-image: url("{bg_home_path}");
 background-size: cover;
@@ -26,25 +26,33 @@ background-position: center;
 background-repeat: no-repeat;
 background-attachment: fixed;
 }}
-
-/* 页面头部默认背景清除 */
+/* 清除页面顶部原生白色条 */
 [data-testid="stHeader"] {{
-background-color: rgba(0,0,0,0);
+background-color: rgba(0,0,0,0) !important;
 }}
-
-/* 导航栏容器：单独使用 bg_subtle.jpg 作为导航栏背景 */
+[data-testid="stToolbar"] {{
+right: 2rem;
+}}
+/* 导航栏容器：单独bg_subtle.jpg背景 */
 .nav-wrap {{
     background-image: url("{bg_subtle_path}");
     background-size: cover;
     background-position: center;
-    padding: 16px 20px;
-    border-radius: 10px;
+    padding:16px 20px;
+    border-radius:10px;
+}}
+/* 板块文字半透底色，防止文字看不清 */
+.block-bg {{
+    background-color:rgba(255,255,255,0.85);
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:15px;
 }}
 </style>
 """
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# ============ 顶部导航栏（套上导航专属背景图bg_subtle） ============
+# ============ 顶部导航栏（导航单独背景图） ============
 st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
 page = st.radio(
     "",
@@ -58,7 +66,7 @@ st.markdown("<hr style='border:1px solid #88a888;'>", unsafe_allow_html=True)
 # ====================== 首页 ======================
 if page == "首页":
     st.image(banner_path, width="stretch")
-
+    st.markdown("<div class='block-bg'>", unsafe_allow_html=True)
     st.subheader("项目简介")
     st.write("RootBloom是一项**AI赋能乡村小学德育**的校本课程项目。项目以河源乡土文化为载体，依托PERMA积极心理模型搭建德育框架，借助AI工具降低乡村教师备课压力，把积极心理、乡土文化、德育育人三者融合，打造低成本、可落地的乡村小学德育课程。")
 
@@ -71,10 +79,12 @@ if page == "首页":
     st.write("2. 利用AI赋能课程全流程，减轻乡村教师备课、素材制作、学生评价的负担。")
     st.write("3. 开发全套可直接落地的德育课程资源包：教案、课件、课堂任务单。")
     st.write("4. 通过课程前后测，可视化学生积极心理品质与德育素养提升变化，建立学生成长档案。")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ====================== PERMA模型与德育拆分页面 ======================
 elif page == "PERMA模型与德育拆分":
+    st.markdown("<div class='block-bg'>", unsafe_allow_html=True)
     st.image(perma_path, width="stretch")
 
     st.subheader("PERMA模型 —— 德育目标拆解")
@@ -102,17 +112,47 @@ elif page == "PERMA模型与德育拆分":
 
     st.subheader("核心逻辑")
     st.write("传统德育偏向条文说教，本项目用PERMA模型把德育拆成五个可落地的成长方向，每一节德育课都对应至少一个维度，让德育效果可以观察、可以评估。")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ====================== AI赋能德育课程【独立页面】 ======================
+# ====================== AI赋能德育课程【✅自动生成课程大纲】 ======================
 elif page == "AI赋能德育课程":
+    st.markdown("<div class='block-bg'>", unsafe_allow_html=True)
     st.subheader("🤖 AI赋能乡村小学德育课程")
     st.write("AI不是用来替代老师，而是作为乡村教师的辅助工具，贯穿课程开发、课堂教学、学生评价全流程，配合PERMA德育框架使用。")
 
-    st.subheader("📝 1. AI辅助课程内容开发（备课环节）")
-    st.write("- 根据PERMA对应德育目标，AI快速生成乡土德育教案、课堂导入故事、课堂提问。")
-    st.write("- 把河源本地簕杜鹃、修竹、东江红色乡土素材交给AI，自动改编成适合小学生的简短德育故事。")
-    st.write("- AI生成课堂任务单、手工活动指引，大幅降低乡村教师备课时间。")
+    st.subheader("📝 AI一键生成PERMA校本课程大纲")
+    st.write("填写参数，自动生成基于PERMA模型的乡土德育课程大纲：")
+    col1, col2 = st.columns(2)
+    with col1:
+        grade_sel = st.selectbox("选择授课年级", ["三年级","四年级","五年级","六年级"])
+        perma_dim = st.multiselect("PERMA维度（可多选）",["P积极情绪","E投入专注","R人际关系","M意义认同","A成就自信"], default=["P积极情绪","M意义认同"])
+    with col2:
+        theme_input = st.text_input("乡土主题", value="河源簕杜鹃与东江红色故事")
+        lesson_num = st.number_input("课时数量", min_value=1,max_value=10,value=2)
+
+    if st.button("生成课程大纲"):
+        st.success("✅ 已根据PERMA模型生成校本德育课程大纲")
+        outline_text = f"""
+# 《{theme_input}》校本德育课程大纲
+适用年级：{grade_sel}
+对应PERMA维度：{', '.join(perma_dim)}
+总课时：{lesson_num}课时
+
+## 课程目标
+1. 情感目标：引导学生感受{theme_input}蕴含的乡土精神，培育积极心理品质，对应选中的PERMA维度。
+2. 认知目标：了解河源本土乡土文化与红色故事，建立家乡认同感。
+3. 行为目标：在小组活动学会合作、表达感受，形成良好德育习惯。
+
+## 课时安排
+"""
+        for i in range(lesson_num):
+            outline_text += f"\n### 第{i+1}课时\n课程环节：乡土情景导入 → 体验活动 → 小组分享 → 作品创作\n"
+        outline_text += """
+## 评价方式
+采用PERMA五维度观察记录 + 前后测问卷，记录学生成长变化。
+"""
+        st.markdown(outline_text)
 
     st.subheader("🎨 2. AI生成课堂可视化素材")
     st.write("- AI绘制乡土插画、德育主题海报，制作课件配图，解决乡村学校美术素材不足的问题。")
@@ -128,10 +168,12 @@ elif page == "AI赋能德育课程":
 
     st.subheader("⚖️ 使用原则")
     st.write("教师全程主导课堂，AI只做辅助。所有AI产出内容，都由教师审核、本地化修改，保证内容贴合乡村小学生认知水平，守住德育育人主线。")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ====================== 校本课程案例 ======================
 elif page == "校本课程案例":
+    st.markdown("<div class='block-bg'>", unsafe_allow_html=True)
     st.subheader("📚 校本德育课程案例")
     st.write("整套课程以PERMA为德育框架，AI辅助备课，面向小学3-6年级，围绕河源乡土文化设计德育体验课。")
 
@@ -147,10 +189,12 @@ elif page == "校本课程案例":
 
     st.subheader("🏫 课堂实施")
     st.write("乡村教师利用AI快速拿到教案和素材，在课堂组织体验活动。教师重点观察学生情绪、合作表现，记录德育成长，课程结束后收集问卷，完成效果评估。")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ====================== 效果评估&成长图表【前后测绘图！】 ======================
 elif page == "效果评估&成长图表":
+    st.markdown("<div class='block-bg'>", unsafe_allow_html=True)
     st.subheader("📊 PERMA模型｜课程前后测 学生心理德育变化可视化")
     st.write("输入前测、后测平均分，网页自动生成对比柱状图，直观看到学生五个维度的成长变化")
 
@@ -182,10 +226,12 @@ elif page == "效果评估&成长图表":
     st.plotly_chart(fig, use_container_width=True)
 
     st.info("💡 说明：图表会实时跟着输入分数自动更新，用于答辩展示学生经过课程之后的心理成长变化")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ====================== 学生成长档案记录页面 ======================
 elif page == "学生成长档案记录":
+    st.markdown("<div class='block-bg'>", unsafe_allow_html=True)
     st.subheader("📒 学生德育成长档案记录")
     st.write("录入学生信息、课堂表现、德育成长评语，保存学生成长记录")
 
@@ -206,3 +252,4 @@ elif page == "学生成长档案记录":
     st.divider()
     st.subheader("已录入记录预览")
     st.write("多学生记录可继续新增，用于长期追踪学生德育与心理成长变化")
+    st.markdown("</div>", unsafe_allow_html=True)
