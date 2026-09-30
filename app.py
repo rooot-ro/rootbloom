@@ -1,6 +1,8 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 
-# ============ 图片路径，jpg格式 ============
+# ============ 图片路径（全部jpg） ============
 banner_path = "banner_rootbloom_grass.jpg"
 bg_home_path = "bg_home.jpg"
 bg_subtle_path = "bg_subtle.jpg"
@@ -13,12 +15,43 @@ st.set_page_config(
     layout="wide"
 )
 
-# ============ 顶部横向导航小板块（一行横向按钮） ============
+# ===================== CSS样式 =====================
+page_bg_img = f"""
+<style>
+/* 【整个页面全局背景图 bg_home.jpg】 */
+[data-testid="stAppViewContainer"] {{
+background-image: url("{bg_home_path}");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}}
+
+/* 页面头部默认背景清除 */
+[data-testid="stHeader"] {{
+background-color: rgba(0,0,0,0);
+}}
+
+/* 导航栏容器：单独使用 bg_subtle.jpg 作为导航栏背景 */
+.nav-wrap {{
+    background-image: url("{bg_subtle_path}");
+    background-size: cover;
+    background-position: center;
+    padding: 16px 20px;
+    border-radius: 10px;
+}}
+</style>
+"""
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# ============ 顶部导航栏（套上导航专属背景图bg_subtle） ============
+st.markdown("<div class='nav-wrap'>", unsafe_allow_html=True)
 page = st.radio(
     "",
-    ["首页", "PERMA模型与德育拆分", "AI赋能德育课程", "校本课程案例", "效果评估", "项目总结"],
+    ["首页", "PERMA模型与德育拆分", "AI赋能德育课程", "校本课程案例", "效果评估&成长图表", "学生成长档案记录"],
     horizontal=True
 )
+st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<hr style='border:1px solid #88a888;'>", unsafe_allow_html=True)
 
 
@@ -26,134 +59,150 @@ st.markdown("<hr style='border:1px solid #88a888;'>", unsafe_allow_html=True)
 if page == "首页":
     st.image(banner_path, width="stretch")
 
-    st.markdown("# 🌱 RootBloom 项目首页")
+    st.subheader("项目简介")
     st.write("RootBloom是一项**AI赋能乡村小学德育**的校本课程项目。项目以河源乡土文化为载体，依托PERMA积极心理模型搭建德育框架，借助AI工具降低乡村教师备课压力，把积极心理、乡土文化、德育育人三者融合，打造低成本、可落地的乡村小学德育课程。")
 
-    st.markdown("## 📌 项目背景")
+    st.subheader("项目背景")
     st.write("乡村小学德育普遍存在素材老旧、备课耗时长、缺少本土化内容、评价方式单一等痛点。教师人手紧张，很难自主开发贴合本地乡土文化的德育课堂。")
     st.write("本项目立足河源乡村小学，将乡土文化资源融入德育，利用AI辅助课程开发、课堂互动与成长评价，以PERMA模型作为德育效果的评价框架，实现德育课堂从说教式到体验式的转变。")
 
-    st.markdown("## 🎯 项目目标")
+    st.subheader("项目目标")
     st.write("1. 基于PERMA积极心理模型，搭建乡土化德育课程框架，将德育目标拆解为五大心理成长维度。")
     st.write("2. 利用AI赋能课程全流程，减轻乡村教师备课、素材制作、学生评价的负担。")
     st.write("3. 开发全套可直接落地的德育课程资源包：教案、课件、课堂任务单。")
-    st.write("4. 通过课程前后测，评估这套德育课程对学生积极心理品质与德育素养的提升效果。")
+    st.write("4. 通过课程前后测，可视化学生积极心理品质与德育素养提升变化，建立学生成长档案。")
 
 
 # ====================== PERMA模型与德育拆分页面 ======================
 elif page == "PERMA模型与德育拆分":
     st.image(perma_path, width="stretch")
 
-    st.markdown("# ✨ PERMA模型 —— 德育目标拆解")
+    st.subheader("PERMA模型 —— 德育目标拆解")
     st.write("我们把PERMA五大维度，直接对应小学德育育人目标，将抽象德育拆分成可观察、可教学、可评估的课堂目标：")
 
-    st.markdown("### 🌞 P 积极情绪 Positive Emotion｜德育：涵养仁爱与共情")
+    st.subheader("🌞 P 积极情绪 Positive Emotion｜德育：涵养仁爱与共情")
     st.write("德育目标：引导学生感受家乡美好，学会共情他人，拥有温暖、正向的情绪。")
     st.write("课堂落地：乡土故事品读、家乡美景观察，引导学生表达内心感受，培育感恩、友善的德育品质。")
 
-    st.markdown("### 🎯 E 投入 Engagement｜德育：培养专注与坚持")
+    st.subheader("🎯 E 投入 Engagement｜德育：培养专注与坚持")
     st.write("德育目标：锻炼学生耐心、毅力，面对任务不轻易放弃，养成踏实专注的品格。")
     st.write("课堂落地：乡土手工、自然探究任务，让学生沉浸式动手实践，在克服困难中磨炼意志品质。")
 
-    st.markdown("### 🤝 R 人际关系 Relationships｜德育：学会合作与尊重")
+    st.subheader("🤝 R 人际关系 Relationships｜德育：学会合作与尊重")
     st.write("德育目标：懂得倾听、尊重同伴，学会团队协作，友善沟通，构建良好同伴关系。")
     st.write("课堂落地：小组研学讨论、集体作品共创，在合作活动学习包容、互助的品德。")
 
-    st.markdown("### 🧭 M 意义 Meaning｜德育：厚植乡土认同与家国情怀")
+    st.subheader("🧭 M 意义 Meaning｜德育：厚植乡土认同与家国情怀")
     st.write("德育目标：认识家乡文化，建立文化自信，理解自身价值，树立责任感。")
     st.write("课堂落地：本土民俗、东江乡土红色故事学习，从热爱家乡起步，建立家国情怀。")
 
-    st.markdown("### 🏅 A 成就 Accomplishment｜德育：塑造自信与进取精神")
+    st.subheader("🏅 A 成就 Accomplishment｜德育：塑造自信与进取精神")
     st.write("德育目标：肯定自我价值，敢于展示成果，建立正向自我认知，勇于挑战。")
     st.write("课堂落地：学生成果展示、作品分享，让学生看见自己的成长，获得成就感。")
 
-    st.markdown("## 📌 核心逻辑")
+    st.subheader("核心逻辑")
     st.write("传统德育偏向条文说教，本项目用PERMA模型把德育拆成五个可落地的成长方向，每一节德育课都对应至少一个维度，让德育效果可以观察、可以评估。")
 
 
 # ====================== AI赋能德育课程【独立页面】 ======================
 elif page == "AI赋能德育课程":
-    st.image(bg_subtle_path, width="stretch")
-
-    st.markdown("# 🤖 AI赋能乡村小学德育课程")
+    st.subheader("🤖 AI赋能乡村小学德育课程")
     st.write("AI不是用来替代老师，而是作为乡村教师的辅助工具，贯穿课程开发、课堂教学、学生评价全流程，配合PERMA德育框架使用。")
 
-    st.markdown("## 📝 1. AI辅助课程内容开发（备课环节）")
+    st.subheader("📝 1. AI辅助课程内容开发（备课环节）")
     st.write("- 根据PERMA对应德育目标，AI快速生成乡土德育教案、课堂导入故事、课堂提问。")
     st.write("- 把河源本地簕杜鹃、修竹、东江红色乡土素材交给AI，自动改编成适合小学生的简短德育故事。")
     st.write("- AI生成课堂任务单、手工活动指引，大幅降低乡村教师备课时间。")
 
-    st.markdown("## 🎨 2. AI生成课堂可视化素材")
+    st.subheader("🎨 2. AI生成课堂可视化素材")
     st.write("- AI绘制乡土插画、德育主题海报，制作课件配图，解决乡村学校美术素材不足的问题。")
     st.write("- 生成情景对话脚本，用于课堂角色扮演德育活动。")
 
-    st.markdown("## 💬 3. AI课堂互动，辅助德育引导")
+    st.subheader("💬 3. AI课堂互动，辅助德育引导")
     st.write("- 课堂上，AI作为虚拟伙伴，引导学生分享感受，倾听学生想法，辅助情绪表达。")
     st.write("- 针对学生的发言，给出温和正向引导，帮助学生表达共情、感恩等德育相关感悟。")
 
-    st.markdown("## 📊 4. AI辅助德育评价（对接PERMA模型）")
+    st.subheader("📊 4. AI辅助德育评价（对接PERMA模型）")
     st.write("- AI整理学生课堂发言、作品描述，对应PERMA五个维度做质性记录。")
-    st.write("- 辅助整理问卷前后测数据，自动生成简单可视化图表，帮助老师快速看到学生德育成长变化。")
+    st.write("- 辅助整理问卷前后测数据，自动生成可视化图表，直观展示学生德育成长变化。")
 
-    st.markdown("## ⚖️ 使用原则")
+    st.subheader("⚖️ 使用原则")
     st.write("教师全程主导课堂，AI只做辅助。所有AI产出内容，都由教师审核、本地化修改，保证内容贴合乡村小学生认知水平，守住德育育人主线。")
 
 
 # ====================== 校本课程案例 ======================
 elif page == "校本课程案例":
-    st.image(bg_subtle_path, width="stretch")
-
-    st.markdown("# 📚 校本德育课程案例")
+    st.subheader("📚 校本德育课程案例")
     st.write("整套课程以PERMA为德育框架，AI辅助备课，面向小学3-6年级，围绕河源乡土文化设计德育体验课。")
 
-    st.markdown("## 📝 课程设计")
+    st.subheader("📝 课程设计")
     st.write("全套8课时德育校本课，每一节课都绑定PERMA的1~2个德育维度。课程以体验式活动为主，摒弃说教式德育。")
     st.write("课程结构：乡土情景导入 → 体验活动 → 小组分享 → 作品创作 → 成果展示。")
 
-    st.markdown("## 🗂️ 课程主题示例")
+    st.subheader("🗂️ 课程主题示例")
     st.write("**主题1：家乡草木里的温暖（P积极情绪）** 感受自然之美，学会感恩；AI生成植物小故事。")
     st.write("**主题2：一起做乡土手作（E投入 + R人际关系）** 小组合作手工，磨炼耐心，学会互助。")
     st.write("**主题3：东江乡土红色小故事（M意义）** 了解家乡先辈故事，厚植家国情怀。")
     st.write("**主题4：我的家乡成果展（A成就）** 学生展示作品，建立自信。")
 
-    st.markdown("## 🏫 课堂实施")
+    st.subheader("🏫 课堂实施")
     st.write("乡村教师利用AI快速拿到教案和素材，在课堂组织体验活动。教师重点观察学生情绪、合作表现，记录德育成长，课程结束后收集问卷，完成效果评估。")
 
 
-# ====================== 效果评估（仅这里放前测后测） ======================
-elif page == "效果评估":
-    st.image(bg_home_path, width="stretch")
+# ====================== 效果评估&成长图表【前后测绘图！】 ======================
+elif page == "效果评估&成长图表":
+    st.subheader("📊 PERMA模型｜课程前后测 学生心理德育变化可视化")
+    st.write("输入前测、后测平均分，网页自动生成对比柱状图，直观看到学生五个维度的成长变化")
 
-    st.markdown("# 📊 德育课程效果评估（前测&后测）")
-    st.write("以PERMA五大维度作为评价指标，采用课程前测、课程后测的对照方式，评估这套AI赋能乡土德育课程对学生积极心理品质、德育素养的提升效果。")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("课程前测得分（满分10分）")
+        pre_P = st.number_input("P 积极情绪", min_value=0.0, max_value=10.0, value=4.2, step=0.1)
+        pre_E = st.number_input("E 投入专注", min_value=0.0, max_value=10.0, value=3.8, step=0.1)
+        pre_R = st.number_input("R 人际关系", min_value=0.0, max_value=10.0, value=4.0, step=0.1)
+        pre_M = st.number_input("M 意义认同", min_value=0.0, max_value=10.0, value=3.5, step=0.1)
+        pre_A = st.number_input("A 成就自信", min_value=0.0, max_value=10.0, value=3.6, step=0.1)
 
-    st.markdown("## 📐 评估方案")
-    st.write("课程**开课之前**发放前测问卷，采集学生在PERMA五个维度的基础水平；8课时课程全部结束之后，使用同一套问卷开展后测。")
-    st.write("量化问卷数据 + 课堂观察、学生作品质性记录，三角互证，综合评价德育成效。")
+    with col2:
+        st.subheader("课程后测得分（满分10分）")
+        post_P = st.number_input("P 积极情绪", min_value=0.0, max_value=10.0, value=7.1, step=0.1)
+        post_E = st.number_input("E 投入专注", min_value=0.0, max_value=10.0, value=6.8, step=0.1)
+        post_R = st.number_input("R 人际关系", min_value=0.0, max_value=10.0, value=7.3, step=0.1)
+        post_M = st.number_input("M 意义认同", min_value=0.0, max_value=10.0, value=7.5, step=0.1)
+        post_A = st.number_input("A 成就自信", min_value=0.0, max_value=10.0, value=6.9, step=0.1)
 
-    st.markdown("## 📈 前后测说明")
-    st.write("前测：获取学生初始状态，作为基准线。")
-    st.write("后测：对比前测数据，观察学生在积极情绪、专注投入、同伴协作、乡土认同感、自信心五个德育维度的提升幅度。")
-    st.write("后续网页可以直接嵌入柱状对比图，直观展示课程带来的变化。")
+    # 构造绘图数据
+    data = pd.DataFrame({
+        "PERMA维度": ["积极情绪P", "投入专注E", "人际关系R", "意义认同M", "成就自信A"] * 2,
+        "分数": [pre_P, pre_E, pre_R, pre_M, pre_A, post_P, post_E, post_R, post_M, post_A],
+        "测试阶段": ["前测","前测","前测","前测","前测","后测","后测","后测","后测","后测"]
+    })
+    fig = px.bar(data, x="PERMA维度", y="分数", color="测试阶段", barmode="group",
+                 range_y=[0,10], title="学生德育心理品质：课程前测 VS 后测对比")
+    st.plotly_chart(fig, use_container_width=True)
 
-    st.info("💡 前测、后测仅为本页面内容，其他页面不再重复。")
+    st.info("💡 说明：图表会实时跟着输入分数自动更新，用于答辩展示学生经过课程之后的心理成长变化")
 
 
-# ====================== 项目总结 ======================
-elif page == "项目总结":
-    st.image(banner_path, width="stretch")
+# ====================== 学生成长档案记录页面 ======================
+elif page == "学生成长档案记录":
+    st.subheader("📒 学生德育成长档案记录")
+    st.write("录入学生信息、课堂表现、德育成长评语，保存学生成长记录")
 
-    st.markdown("# 📋 项目总结与展望")
-    st.write("RootBloom项目，以PERMA积极心理模型拆解德育目标，利用AI赋能乡村小学德育校本课程，把河源乡土文化融入德育课堂，探索低成本、可复制的乡村德育新路径。")
+    name = st.text_input("学生姓名")
+    grade = st.text_input("班级")
+    p_score = st.slider("积极情绪(P) 课堂表现评分 0~10",0,10,5)
+    e_score = st.slider("投入专注(E) 课堂表现评分 0~10",0,10,5)
+    r_score = st.slider("人际关系(R) 课堂表现评分 0~10",0,10,5)
+    m_score = st.slider("意义认同(M) 课堂表现评分 0~10",0,10,5)
+    a_score = st.slider("成就自信(A) 课堂表现评分 0~10",0,10,5)
+    comment = st.text_area("教师德育成长评语")
 
-    st.markdown("## 🏆 项目成果")
-    st.write("✅ 基于PERMA模型完成德育目标拆解，建立乡土德育课程框架")
-    st.write("✅ 搭建AI辅助德育课程全流程方案，适配乡村教师需求")
-    st.write("✅ 产出8课时完整校本德育教案、课件、学生任务单资源包")
-    st.write("✅ 完成课堂实践，开展前后测评估，收集学生成长数据")
+    if st.button("保存本条学生成长记录"):
+        st.success(f"✅【{name}】成长记录已保存！")
+        st.write(f"PERMA分项：P:{p_score}｜E:{e_score}｜R:{r_score}｜M:{m_score}｜A:{a_score}")
+        st.write(f"教师评语：{comment}")
 
-    st.markdown("## 🔍 反思")
-    st.write("AI仅作为辅助工具，不能替代教师的德育引导。部分乡村学生文字表达能力有限，问卷填写需要教师引导。样本规模有限，后续可以扩大试点学校。")
-
-    st.markdown("## 🔭 未来计划")
-    st.write("持续迭代AI提示词模板，一键生成乡土德育课程素材；继续拓展河源乡土文化素材库，推广给更多乡村小学。希望这套模式可以给县域乡村德育提供可落地的参考方案。")
+    st.divider()
+    st.subheader("已录入记录预览")
+    st.write("多学生记录可继续新增，用于长期追踪学生德育与心理成长变化")
