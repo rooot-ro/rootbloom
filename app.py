@@ -1,6 +1,6 @@
 import streamlit as st
 
-# ============ 图片路径，全部改为jpg，匹配你仓库图片 ============
+# ============ 图片路径，jpg格式 ============
 banner_path = "banner_rootbloom_grass.jpg"
 bg_home_path = "bg_home.jpg"
 bg_subtle_path = "bg_subtle.jpg"
@@ -24,7 +24,7 @@ st.markdown("<hr style='border:1px solid #88a888;'>", unsafe_allow_html=True)
 
 # ====================== 首页 ======================
 if page == "首页":
-    st.image(banner_path, use_column_width=True)
+    st.image(banner_path, width="stretch")
 
     st.markdown("# 🌱 RootBloom 项目首页")
     st.write("RootBloom是一项**AI赋能乡村小学德育**的校本课程项目。项目以河源乡土文化为载体，依托PERMA积极心理模型搭建德育框架，借助AI工具降低乡村教师备课压力，把积极心理、乡土文化、德育育人三者融合，打造低成本、可落地的乡村小学德育课程。")
@@ -42,7 +42,7 @@ if page == "首页":
 
 # ====================== PERMA模型与德育拆分页面 ======================
 elif page == "PERMA模型与德育拆分":
-    st.image(perma_path, use_column_width=True)
+    st.image(perma_path, width="stretch")
 
     st.markdown("# ✨ PERMA模型 —— 德育目标拆解")
     st.write("我们把PERMA五大维度，直接对应小学德育育人目标，将抽象德育拆分成可观察、可教学、可评估的课堂目标：")
@@ -73,7 +73,7 @@ elif page == "PERMA模型与德育拆分":
 
 # ====================== AI赋能德育课程【独立页面】 ======================
 elif page == "AI赋能德育课程":
-    st.image(bg_subtle_path, use_column_width=True)
+    st.image(bg_subtle_path, width="stretch")
 
     st.markdown("# 🤖 AI赋能乡村小学德育课程")
     st.write("AI不是用来替代老师，而是作为乡村教师的辅助工具，贯穿课程开发、课堂教学、学生评价全流程，配合PERMA德育框架使用。")
@@ -101,7 +101,7 @@ elif page == "AI赋能德育课程":
 
 # ====================== 校本课程案例 ======================
 elif page == "校本课程案例":
-    st.image(bg_subtle_path, use_column_width=True)
+    st.image(bg_subtle_path, width="stretch")
 
     st.markdown("# 📚 校本德育课程案例")
     st.write("整套课程以PERMA为德育框架，AI辅助备课，面向小学3-6年级，围绕河源乡土文化设计德育体验课。")
@@ -122,7 +122,7 @@ elif page == "校本课程案例":
 
 # ====================== 效果评估（仅这里放前测后测） ======================
 elif page == "效果评估":
-    st.image(bg_home_path, use_column_width=True)
+    st.image(bg_home_path, width="stretch")
 
     st.markdown("# 📊 德育课程效果评估（前测&后测）")
     st.write("以PERMA五大维度作为评价指标，采用课程前测、课程后测的对照方式，评估这套AI赋能乡土德育课程对学生积极心理品质、德育素养的提升效果。")
@@ -141,7 +141,7 @@ elif page == "效果评估":
 
 # ====================== 项目总结 ======================
 elif page == "项目总结":
-    st.image(banner_path, use_column_width=True)
+    st.image(banner_path, width="stretch")
 
     st.markdown("# 📋 项目总结与展望")
     st.write("RootBloom项目，以PERMA积极心理模型拆解德育目标，利用AI赋能乡村小学德育校本课程，把河源乡土文化融入德育课堂，探索低成本、可复制的乡村德育新路径。")
